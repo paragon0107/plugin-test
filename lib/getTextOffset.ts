@@ -1,4 +1,4 @@
-import { figmaAPI } from "@/lib/figmaAPI";
+import { figmaAPI } from '@/lib/figmaAPI';
 
 export async function getTextOffset() {
   const bounding = await figmaAPI.run((figma) => {
@@ -16,7 +16,7 @@ export async function getTextOffset() {
           right: Math.max(acc.right, boundingBox.x + boundingBox.width),
         };
       },
-      { top: Infinity, right: -Infinity },
+      { top: Infinity, right: -Infinity }
     );
   });
 

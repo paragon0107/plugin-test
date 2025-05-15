@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { figmaAPI } from "@/lib/figmaAPI";
-import { getTextForSelection } from "@/lib/getTextForSelection";
-import { getTextOffset } from "@/lib/getTextOffset";
-import { CompletionRequestBody } from "@/lib/types";
-import { useState } from "react";
-import { z } from "zod";
+import { figmaAPI } from '@/lib/figmaAPI';
+import { getTextForSelection } from '@/lib/getTextForSelection';
+import { getTextOffset } from '@/lib/getTextOffset';
+import { CompletionRequestBody } from '@/lib/types';
+import { useState } from 'react';
+import { z } from 'zod';
 
 // This function calls our API and lets you read each character as it comes in.
 // To change the prompt of our AI, go to `app/api/completion.ts`.
 async function streamAIResponse(body: z.infer<typeof CompletionRequestBody>) {
-  const resp = await fetch("/api/completion", {
-    method: "POST",
+  const resp = await fetch('/api/completion', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
   });
@@ -21,26 +21,26 @@ async function streamAIResponse(body: z.infer<typeof CompletionRequestBody>) {
   const reader = resp.body?.pipeThrough(new TextDecoderStream()).getReader();
 
   if (!reader) {
-    throw new Error("Error reading response");
+    throw new Error('Error reading response');
   }
 
   return reader;
 }
 
 export default function Plugin() {
-  const [completion, setCompletion] = useState("");
+  const [completion, setCompletion] = useState('');
 
   // This function calls our API and handles the streaming response.
   // This ends up building the text up and using React state to update the UI.
   const onStreamToIFrame = async () => {
-    setCompletion("");
+    setCompletion('');
     const layers = await getTextForSelection();
 
     if (!layers.length) {
       figmaAPI.run(async (figma) => {
         figma.notify(
-          "Please select a layer with text in it to generate a poem.",
-          { error: true },
+          'Please select a layer with text in it to generate a poem.',
+          { error: true }
         );
       });
       return;
@@ -50,7 +50,7 @@ export default function Plugin() {
       layers,
     });
 
-    let text = "";
+    let text = '';
     while (true) {
       const { done, value } = await reader.read();
       if (done) {
@@ -69,8 +69,8 @@ export default function Plugin() {
     if (!layers.length) {
       figmaAPI.run(async (figma) => {
         figma.notify(
-          "Please select a layer with text in it to generate a poem.",
-          { error: true },
+          'Please select a layer with text in it to generate a poem.',
+          { error: true }
         );
       });
       return;
@@ -80,7 +80,7 @@ export default function Plugin() {
       layers,
     });
 
-    let text = "";
+    let text = '';
     let nodeID: string | null = null;
     const textPosition = await getTextOffset();
 
@@ -94,7 +94,7 @@ export default function Plugin() {
       // run in the figma plugin sandbox, not in the iframe.
       nodeID = await figmaAPI.run(
         async (figma, { nodeID, text, textPosition }) => {
-          let node = figma.getNodeById(nodeID ?? "");
+          let node = figma.getNodeById(nodeID ?? '');
 
           // If the node doesn't exist, create it and position it to the right of the selection.
           if (!node) {
@@ -103,14 +103,14 @@ export default function Plugin() {
             node.y = textPosition?.y ?? 0;
           }
 
-          if (node.type !== "TEXT") {
-            return "";
+          if (node.type !== 'TEXT') {
+            return '';
           }
 
           const oldHeight = node.height;
 
-          await figma.loadFontAsync({ family: "Inter", style: "Medium" });
-          node.fontName = { family: "Inter", style: "Medium" };
+          await figma.loadFontAsync({ family: 'Inter', style: 'Medium' });
+          node.fontName = { family: 'Inter', style: 'Medium' };
 
           node.characters = text;
 
@@ -122,7 +122,7 @@ export default function Plugin() {
 
           return node.id;
         },
-        { nodeID, text, textPosition },
+        { nodeID, text, textPosition }
       );
     };
 
