@@ -1,4 +1,4 @@
-const SITE_URL = "https://plugin-test-git-main-paragon0107s-projects.vercel.app/";
+const SITE_URL = "https://plugin-test-chi.vercel.app/";
 
 figma.showUI(`<script>window.location.href = '${SITE_URL}'</script>`, {
   width: 700,

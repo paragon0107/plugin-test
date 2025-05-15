@@ -35,7 +35,7 @@ export default function Plugin() {
   const onStreamToIFrame = async () => {
     setCompletion('');
     const layers = await getTextForSelection();
-
+    console.log("Layers")
     if (!layers.length) {
       figmaAPI.run(async (figma) => {
         figma.notify(
