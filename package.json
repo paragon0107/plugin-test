@@ -7,7 +7,7 @@
     "start": "next start",
     "build": "npm run build:plugin && npm run build:next",
     "lint": "next lint",
-    "build:plugin": "esbuild plugin/code.ts --bundle --target=es6 --loader:.svg=text --outfile=plugin/dist/code.js --define:SITE_URL=\"https://test-ai-plugin-template.vercel.app/\"",
+    "build:plugin": "esbuild plugin/code.ts --bundle --target=es6 --loader:.svg=text --outfile=plugin/dist/code.js",
     "build:next": "next build",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write ."
