@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently -n plugin,next 'npm run build:plugin -- --watch --define:SITE_URL=\\\"http://localhost:3000\\\"' 'next dev'",
     "start": "next start",
-    "build": "concurrently -n plugin,next 'npm run build:plugin -- --define:SITE_URL=\\\"$npm_package_config_siteURL\\\"' 'next build'",
+    "build": "concurrently -n plugin,next \"npm run build:plugin -- --define:SITE_URL=\\\"$npm_package_config_siteURL\\\"\" \"next build\"",
     "lint": "next lint",
     "build:plugin": "esbuild plugin/code.ts --bundle --target=es6 --loader:.svg=text --outfile=plugin/dist/code.js",
     "build:next": "next build",
@@ -36,6 +36,6 @@
     "concurrently": "^8.2.0"
   },
   "config": {
-    "siteURL": "https://test-ai-plugin-template.vercel.app/"
+    "siteURL": "plugin-test-hwhvff9tx-paragon0107s-projects.vercel.app"
   }
 }
