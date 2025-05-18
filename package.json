@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently -n plugin,next 'npm run build:plugin -- --watch --define:SITE_URL=\"http://localhost:3000\"' 'next dev'",
     "start": "next start",
-    "build": "node -e \"const siteUrl = require('./package.json').config.siteURL; console.log('Using site URL:', siteUrl); require('child_process').execSync(`npm run build:plugin -- --define:SITE_URL=\\\"${siteUrl}\\\" && npm run build:next`, {stdio:'inherit'})\"",
+    "build": "node build-helper.js",
     "lint": "next lint",
     "build:plugin": "esbuild plugin/code.ts --bundle --target=es6 --loader:.svg=text --outfile=plugin/dist/code.js",
     "build:next": "next build",
